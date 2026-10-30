@@ -1,0 +1,234 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile with role-based access for Student, Faculty, and Admin",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["student", "faculty", "admin"] },
+        "studentId": { "type": "string", "maxLength": 30 },
+        "facultyId": { "type": "string", "maxLength": 30 },
+        "department": { "type": "string", "maxLength": 100 },
+        "semester": { "type": "string", "maxLength": 20 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "avatarUrl": { "type": "string", "maxLength": 500 },
+        "currentCgpa": { "type": "number" },
+        "attendancePercentage": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "displayName", "role"]
+    },
+    "Course": {
+      "title": "Academic Course",
+      "description": "Curriculum course syllabus, credits, and faculty assignment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string", "maxLength": 20 },
+        "name": { "type": "string", "maxLength": 150 },
+        "department": { "type": "string", "maxLength": 100 },
+        "credits": { "type": "number" },
+        "semester": { "type": "string", "maxLength": 20 },
+        "facultyName": { "type": "string", "maxLength": 100 },
+        "facultyEmail": { "type": "string", "format": "email" },
+        "room": { "type": "string", "maxLength": 50 },
+        "totalSessions": { "type": "number" }
+      },
+      "required": ["code", "name", "credits"]
+    },
+    "AttendanceRecord": {
+      "title": "Attendance Record",
+      "description": "Biometric & session attendance logged for a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "subjectCode": { "type": "string", "maxLength": 20 },
+        "subjectName": { "type": "string", "maxLength": 100 },
+        "date": { "type": "string" },
+        "status": { "type": "string", "enum": ["present", "absent", "od_leave"] },
+        "session": { "type": "string", "maxLength": 50 },
+        "recordedBy": { "type": "string" }
+      },
+      "required": ["studentId", "subjectCode", "date", "status"]
+    },
+    "Assignment": {
+      "title": "Coursework Assignment",
+      "description": "Assignment project with prompt, deadline, rubrics and resources",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "subjectCode": { "type": "string", "maxLength": 20 },
+        "subjectName": { "type": "string", "maxLength": 100 },
+        "facultyId": { "type": "string" },
+        "facultyName": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "dueDate": { "type": "string" },
+        "maxMarks": { "type": "number" },
+        "gradeWeightage": { "type": "string", "maxLength": 20 },
+        "priority": { "type": "string", "enum": ["urgent", "medium", "normal"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "subjectCode", "dueDate", "maxMarks"]
+    },
+    "Submission": {
+      "title": "Assignment Submission",
+      "description": "Student work submission with code/asset links, evaluation and grade",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "assignmentId": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "studentNumber": { "type": "string", "maxLength": 30 },
+        "submittedAt": { "type": "string" },
+        "status": { "type": "string", "enum": ["submitted", "graded", "late", "under_review"] },
+        "fileName": { "type": "string", "maxLength": 200 },
+        "fileSize": { "type": "string", "maxLength": 50 },
+        "fileUrl": { "type": "string", "maxLength": 500 },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "score": { "type": "number" },
+        "letterGrade": { "type": "string", "maxLength": 5 },
+        "feedback": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["assignmentId", "studentId", "submittedAt", "status"]
+    },
+    "Exam": {
+      "title": "Examination Timetable",
+      "description": "Mid-term and end-term examination seating, hall and invigilator schedule",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "paperCode": { "type": "string", "maxLength": 20 },
+        "subjectCode": { "type": "string", "maxLength": 20 },
+        "subjectName": { "type": "string", "maxLength": 100 },
+        "date": { "type": "string" },
+        "time": { "type": "string", "maxLength": 50 },
+        "durationMinutes": { "type": "number" },
+        "venue": { "type": "string", "maxLength": 100 },
+        "seatDesk": { "type": "string", "maxLength": 30 },
+        "invigilator": { "type": "string", "maxLength": 100 },
+        "examType": { "type": "string", "enum": ["mid_term", "end_term", "quiz"] },
+        "instructions": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["subjectCode", "subjectName", "date", "venue"]
+    },
+    "GradeResult": {
+      "title": "Academic Grade Ledger",
+      "description": "Official semester grade report and transcript entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "semester": { "type": "string", "maxLength": 30 },
+        "academicYear": { "type": "string", "maxLength": 30 },
+        "sgpa": { "type": "number" },
+        "cgpa": { "type": "number" },
+        "earnedCredits": { "type": "number" },
+        "totalCredits": { "type": "number" },
+        "honorsStatus": { "type": "string", "maxLength": 50 },
+        "publishedDate": { "type": "string" }
+      },
+      "required": ["studentId", "semester", "sgpa"]
+    },
+    "Notification": {
+      "title": "Portal Notification",
+      "description": "Announcements, deadlines, exam notices and attendance alerts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "recipientId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "category": { "type": "string", "enum": ["announcement", "assignment", "exam", "attendance", "system"] },
+        "timestamp": { "type": "string" },
+        "read": { "type": "boolean" },
+        "priority": { "type": "string", "enum": ["high", "medium", "normal"] }
+      },
+      "required": ["recipientId", "title", "message", "timestamp"]
+    },
+    "Message": {
+      "title": "Portal Direct Message",
+      "description": "Student to faculty and advisor direct message exchange",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "conversationId": { "type": "string", "maxLength": 100 },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string", "maxLength": 100 },
+        "senderRole": { "type": "string", "enum": ["student", "faculty", "admin"] },
+        "recipientId": { "type": "string" },
+        "recipientName": { "type": "string", "maxLength": 100 },
+        "content": { "type": "string", "maxLength": 2000 },
+        "timestamp": { "type": "string" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["conversationId", "senderId", "recipientId", "content", "timestamp"]
+    },
+    "LeaveExemption": {
+      "title": "Leave and Exemption Request",
+      "description": "Medical and On-Duty attendance exemption applications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "studentNumber": { "type": "string", "maxLength": 30 },
+        "type": { "type": "string", "enum": ["medical", "on_duty", "sports"] },
+        "reason": { "type": "string", "maxLength": 500 },
+        "sessionsCount": { "type": "number" },
+        "dateRange": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "submittedAt": { "type": "string" }
+      },
+      "required": ["studentId", "type", "reason", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles and credentials"
+    },
+    "/courses/{courseId}": {
+      "schema": { "$ref": "#/entities/Course" },
+      "description": "Registered academic courses"
+    },
+    "/attendance/{attendanceId}": {
+      "schema": { "$ref": "#/entities/AttendanceRecord" },
+      "description": "Daily lecture attendance records"
+    },
+    "/assignments/{assignmentId}": {
+      "schema": { "$ref": "#/entities/Assignment" },
+      "description": "Homework and project assignments"
+    },
+    "/submissions/{submissionId}": {
+      "schema": { "$ref": "#/entities/Submission" },
+      "description": "Student homework submissions"
+    },
+    "/exams/{examId}": {
+      "schema": { "$ref": "#/entities/Exam" },
+      "description": "Examination timetable entries"
+    },
+    "/results/{resultId}": {
+      "schema": { "$ref": "#/entities/GradeResult" },
+      "description": "Semester grade transcripts"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "User alerts and circulars"
+    },
+    "/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Direct student-faculty messages"
+    },
+    "/exemptions/{exemptionId}": {
+      "schema": { "$ref": "#/entities/LeaveExemption" },
+      "description": "Medical & OD exemption requests"
+    }
+  }
+}
